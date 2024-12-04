@@ -1,4 +1,4 @@
-name: Random Commits with Test Job
+name: Random Pushes with Test Job
 
 on:
   schedule:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - run: echo "Cron job ran successfully at $(date -u)!"
 
-  push_random_commits:
+  push_random_files:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,8 +25,8 @@ jobs:
         with:
           python-version: '3.9'
 
-      # Step 3: Generate Random Commits
-      - name: Generate Random Commits
+      # Step 3: Generate Random Pushes
+      - name: Generate Random Pushes
         env:
           PAT: ${{ secrets.PAT_TOKEN }}  # Use the PAT stored in the repository's secrets
         run: |
@@ -37,17 +37,15 @@ jobs:
           # Create the random_files directory if it doesn't exist
           mkdir -p random_files
 
-          # Generate a random number of commits (between 3 and 7)
-          NUM_COMMITS=$((3 + RANDOM % 5))
-          echo "Creating $NUM_COMMITS commits in the random_files folder."
+          # Generate a random number of pushes (between 3 and 7)
+          NUM_PUSHES=$((3 + RANDOM % 5))
+          echo "Creating $NUM_PUSHES pushes with one commit per push."
 
-          for i in $(seq 1 $NUM_COMMITS); do
-            # Generate random content for each commit inside the random_files folder
+          for i in $(seq 1 $NUM_PUSHES); do
+            # Generate random content for each push
             FILE_NAME="random_files/random_file_$i_$(date +%s).txt"
             echo "Random Content: $RANDOM" > $FILE_NAME
             git add $FILE_NAME
-            git commit -m "Random Commit #$i: $(date)"
+            git commit -m "Random Push Commit #$i: $(date)"
+            git push https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
           done
-
-          # Push all commits at once
-          git push https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
