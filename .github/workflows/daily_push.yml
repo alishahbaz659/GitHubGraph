@@ -6,6 +6,11 @@ on:
   workflow_dispatch:     # Enables manual triggering of the workflow
 
 jobs:
+  test-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Cron job ran successfully at $(date -u)!"
+      
   push_random_file:
     runs-on: ubuntu-latest
 
