@@ -30,6 +30,10 @@ jobs:
         env:
           PAT: ${{ secrets.PAT_TOKEN }}  # Use the PAT stored in the repository's secrets
         run: |
+          # Configure Git
+          git config --global user.name "alishahbaz659"
+          git config --global user.email "alishahbazbal1234@gmail.com"
+
           # Generate a random number of commits (between 3 and 7)
           NUM_COMMITS=$((3 + RANDOM % 5))
           echo "Creating $NUM_COMMITS commits."
