@@ -22,7 +22,6 @@ jobs:
 
       # Step 3: Install Dependencies (if required)
       - name: Install Dependencies
-        run: pip install -r requirements.txt  # Skip this if there are no dependencies
 
       # Step 4: Run Python Script
       - name: Run Python Script
