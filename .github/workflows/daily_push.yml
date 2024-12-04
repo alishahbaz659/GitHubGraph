@@ -3,6 +3,7 @@ name: Daily Push
 on:
   schedule:
     - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch:     # Add this line to enable manual triggering
 
 jobs:
   push_random_file:
