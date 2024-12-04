@@ -1,17 +1,17 @@
-name: Daily Push
+name: Random Commits with Test Job
 
 on:
   schedule:
     - cron: '0 0 * * *' # Runs daily at midnight UTC
-  workflow_dispatch:     # Enables manual triggering of the workflow
+  workflow_dispatch:       # Enables manual triggering
 
 jobs:
   test-cron:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Cron job ran successfully at $(date -u)!"
-      
-  push_random_file:
+
+  push_random_commits:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,17 +25,22 @@ jobs:
         with:
           python-version: '3.9'
 
-      # Step 3: Run Python Script
-      - name: Run Python Script
-        run: python app.py
-
-      # Step 4: Commit and Push Changes
-      - name: Commit and Push
+      # Step 3: Generate Random Commits
+      - name: Generate Random Commits
         env:
           PAT: ${{ secrets.PAT_TOKEN }}  # Use the PAT stored in the repository's secrets
         run: |
-          git config --global user.name "alishahbaz659"
-          git config --global user.email "alishahbazbal1234@gmail.com"
-          git add .
-          git commit -m "Daily Commit: $(date)" || echo "No changes to commit"
+          # Generate a random number of commits (between 3 and 7)
+          NUM_COMMITS=$((3 + RANDOM % 5))
+          echo "Creating $NUM_COMMITS commits."
+
+          for i in $(seq 1 $NUM_COMMITS); do
+            # Generate random content for each commit
+            FILE_NAME="random_file_$i_$(date +%s).txt"
+            echo "Random Content: $RANDOM" > $FILE_NAME
+            git add $FILE_NAME
+            git commit -m "Random Commit #$i: $(date)"
+          done
+
+          # Push all commits at once
           git push https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
