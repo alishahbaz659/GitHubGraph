@@ -20,9 +20,6 @@ jobs:
         with:
           python-version: '3.9'
 
-      # Step 3: Install Dependencies (if required)
-      - name: Install Dependencies
-
       # Step 4: Run Python Script
       - name: Run Python Script
         run: python app.py
