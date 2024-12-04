@@ -34,13 +34,16 @@ jobs:
           git config --global user.name "alishahbaz659"
           git config --global user.email "alishahbazbal1234@gmail.com"
 
+          # Create the random_files directory if it doesn't exist
+          mkdir -p random_files
+
           # Generate a random number of commits (between 3 and 7)
           NUM_COMMITS=$((3 + RANDOM % 5))
-          echo "Creating $NUM_COMMITS commits."
+          echo "Creating $NUM_COMMITS commits in the random_files folder."
 
           for i in $(seq 1 $NUM_COMMITS); do
-            # Generate random content for each commit
-            FILE_NAME="random_file_$i_$(date +%s).txt"
+            # Generate random content for each commit inside the random_files folder
+            FILE_NAME="random_files/random_file_$i_$(date +%s).txt"
             echo "Random Content: $RANDOM" > $FILE_NAME
             git add $FILE_NAME
             git commit -m "Random Commit #$i: $(date)"
